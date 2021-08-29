@@ -57,7 +57,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Print("bootin up")
+	log.Print("bootin up on ", *addr)
 	flag.Parse()
 	log.SetFlags(0)
 	http.HandleFunc("/ticket", ticketDispenser)
