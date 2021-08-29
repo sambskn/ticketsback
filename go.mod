@@ -1,4 +1,4 @@
-module example.com
+module github.com/sambskn/ticketsback
 
 go 1.16
 
