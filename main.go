@@ -53,6 +53,7 @@ func ticketDispenser(w http.ResponseWriter, r *http.Request) {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
+	log.Print("trying to connect main page to ws at ", r.Host)
 	homeTemplate.Execute(w, "ws://"+r.Host+"/ticket")
 }
 
