@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
@@ -25,7 +26,8 @@ import (
 // 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 // }
 
-var addr = flag.String("addr", os.Getenv("ADDR"), "http service address")
+// var addr = flag.String("addr", os.Getenv("ADDR"), "http service address")
+var port = flag.String("p", os.Getenv("PORT"), "http service address")
 
 var upgrader = websocket.Upgrader{} // use defaults lol
 
@@ -58,18 +60,22 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Print("bootin up on ", *addr)
+	log.Print("bootin up on ", port)
 	flag.Parse()
 	log.SetFlags(0)
-	http.HandleFunc("/ticket", ticketDispenser)
-	http.HandleFunc("/", home)
-	log.Fatal(http.ListenAndServe(*addr, nil))
+	// http.HandleFunc("/ticket", ticketDispenser)
+	// http.HandleFunc("/", home)
+	// log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 
-	// router := gin.Default()
-	// router.GET("/albums", getAlbums)
-	// router.POST("/albums", postAlbums)
+	router := gin.Default()
+	router.GET("/ticket", func(c *gin.Context) {
+		ticketDispenser(c.Writer, c.Request)
+	})
+	router.GET("/", func(c *gin.Context) {
+		home(c.Writer, c.Request)
+	})
 
-	// router.Run("localhost:8080")
+	router.Run(":" + *port)
 
 }
 
